@@ -26,7 +26,6 @@ function drawNowBar(startDate){
     var now = new Date();
     var delta = now.getTime() -  startDate.getTime();
     $("#contentSvg").append(createLineElement(delta * oneMsInPx,0,delta * oneMsInPx,height,2,"red"));
-
     console.log($("#rightPanel").width);
 }
 
