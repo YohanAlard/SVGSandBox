@@ -9,12 +9,14 @@ var oneMsInPx = oneHourInPx / (1000 * 60 * 60);
 var oneDayinPx = 1440;
 var width = oneHourInPx * 24 * 8;
 var height = "2500";
+
 function drawPancarte(){
-    var startDate = new Date()
+    var startDate = new Date();
     var endDate = new Date();
+    startDate.clearAfterMinutes();
+    endDate.clearAfterMinutes();
     startDate.setDate(startDate.getDate() - nbPreviousDay);
     endDate.setDate(endDate.getDate() + nbNextDay);
-
     drawHours(startDate, endDate );
     drawNowBar(startDate);
     attachPancarteHandler();
@@ -34,7 +36,10 @@ function drawHours(startDate,endDate) {
         nbItem++;
         var currentTime = new Date();
         currentTime.setTime(i);
+        //draw hour text
         $("#contentSvg").append(createTextElement((nbItem * oneHourInPx * 2), 10, "grey", "grey", currentTime.toHHMM()));
         console.log(nbItem);
+        //draw grid
+        $("#contentSvg").append(createLineElement((nbItem * oneHourInPx * 2 + 15) ,20,(nbItem * oneHourInPx * 2+ 15),height,1,"grey"));
     }
 }
