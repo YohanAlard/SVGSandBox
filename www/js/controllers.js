@@ -3,6 +3,23 @@ angular.module('starter.controllers', [])
     .controller('DashCtrl', function ($scope) {
         drawPancarte();
 
+        $scope.zoomIn =function zoomIn(){
+               console.log("ZI" +$('#contentSvg')[0].getAttribute("viewBox"));
+               var previousViewBox = $('#contentSvg')[0].getAttribute("viewBox").split(" ");
+               var newWidth = parseInt(parseInt(previousViewBox[2]) * 0.9);
+               console.log(newWidth);
+               var newX = parseInt(previousViewBox[0]) + parseInt(previousViewBox[2]) * 0.05;
+               console.log(newX);
+               $('#contentSvg')[0].setAttribute("viewBox", "" + newX + " " +
+                            previousViewBox[1]+" " + newWidth +" "+ previousViewBox[3]);
+               console.log("ZI E" +$('#contentSvg')[0].getAttribute("viewBox"));
+
+
+        }
+        $scope.zoomOut =function zoomIn(){
+               console.log("ZO");
+
+        }
     })
 
     .controller('ChatsCtrl', function ($scope, Chats) {

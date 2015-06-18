@@ -13,3 +13,10 @@ Date.prototype.toHHMM = function () {
     //    console.log(" toLocaleTimeString " + this.toLocaleTimeString().substring(0,5));
         return this.toLocaleTimeString().substring(0,5);
 }
+
+Date.prototype.clearAfterMinutes = function () {
+    //    console.log(" toLocaleTimeString " + this.toLocaleTimeString().substring(0,5));
+         this.setSeconds(0);
+         this.setMinutes(0);
+         this.setMilliseconds(0);
+}
