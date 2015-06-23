@@ -1,24 +1,35 @@
 angular.module('starter.controllers', [])
 
     .controller('DashCtrl', function ($scope) {
-        drawPancarte();
+        drawPancarte($scope);
 
-        $scope.zoomIn =function zoomIn(){
-               console.log("ZI" +$('#contentSvg')[0].getAttribute("viewBox"));
-               var previousViewBox = $('#contentSvg')[0].getAttribute("viewBox").split(" ");
-               var newWidth = parseInt(parseInt(previousViewBox[2]) * 0.9);
-               console.log(newWidth);
-               var newX = parseInt(previousViewBox[0]) + parseInt(previousViewBox[2]) * 0.05;
-               console.log(newX);
-               $('#contentSvg')[0].setAttribute("viewBox", "" + newX + " " +
-                            previousViewBox[1]+" " + newWidth +" "+ previousViewBox[3]);
-               console.log("ZI E" +$('#contentSvg')[0].getAttribute("viewBox"));
+        $scope.zoomOut = function zoomOut() {
+           // $scope.hours.forEach(updateXforZoomOut);
+            //d3.selectAll("line").selectAll("x1").call(log)
+           ratio = ratioDown;
+            d3.selectAll("svg").selectAll("line").each(updateX1X2);
+            d3.selectAll("svg").selectAll("text").each(updateX);
+            d3.selectAll("rect").each(updateX);
+        /*    console.log("not this one");
+            //update view box
+            var previousViewBox = $('#contentSvg')[0].getAttribute("viewBox").split(" ");
+            var newX = parseInt(previousViewBox[0]) * (1 - ratioUp) / 2 + parseInt(previousViewBox[0]);
+            $('#contentSvg')[0].setAttribute("viewBox", "" + newX + " " + previousViewBox[1] + " " + previousViewBox[2] + " " + previousViewBox[3]);*/
+            //update now daa
 
 
+//  /* newXHours =  hoursSvg.hours.getAttribute("x").replace("px","");
         }
-        $scope.zoomOut =function zoomIn(){
-               console.log("ZO");
-
+        $scope.zoomIn = function zoomIn() {
+          //  $scope.hours.forEach(updateXforZoomIn);
+            ratio = ratioUp;
+            d3.selectAll("svg").selectAll("line").each(updateX1X2);
+            d3.selectAll("svg").selectAll("text").each(updateX);
+            d3.selectAll("rect").each(updateX);
+            //for	(index = 0; index < $scope.hours.length; index++) {
+            var previousViewBox = $('#contentSvg')[0].getAttribute("viewBox").split(" ");
+            var newX = parseInt(previousViewBox[0]) * (1 - ratioDown) / 2 + parseInt(previousViewBox[0]);
+            $('#contentSvg')[0].setAttribute("viewBox", "" + newX + " " + previousViewBox[1] + " " + previousViewBox[2] + " " + previousViewBox[3]);
         }
     })
 
