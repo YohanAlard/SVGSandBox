@@ -30,7 +30,7 @@ function scrollH(evt) {
     }
 }
 
-function translateContentGroupXY(deltaX, deltaY){
+function translateContentGroupXY(deltaX, deltaY, boolean){
         var svgGraph = d3.select("#contentSvg").selectAll("#graph");
         var svgHeader = d3.select("#contentSvg").selectAll("#header");
         var svgLegend = d3.select("#legendeSvg").selectAll("#legend");
@@ -40,8 +40,8 @@ function translateContentGroupXY(deltaX, deltaY){
         var newValueY = previousValueY + deltaY;
         svgGraph.attr("transform","translate(-"+newValueX+","+newValueY+")");
         svgHeader.attr("transform","translate(-"+newValueX+")");
-        svgLegend.attr("transform","translate(0,"+newValueY+")");
-
+        if (!boolean)
+            svgLegend.attr("transform","translate(0,"+newValueY+")");
 }
 
 function scrollHEnd(evt) {

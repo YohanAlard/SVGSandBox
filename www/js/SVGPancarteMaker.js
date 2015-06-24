@@ -15,6 +15,7 @@ var ratioUp = 1.1;
 var identityScale;
 var margin=1440 *8;
 var colors = ["rgb(250,128,114)", "rgb(250, 173, 114)", "rgb(250, 218, 114)", "rgb(152, 251, 152)", "rgb(135, 206, 235)", "rgb(135, 172, 235)", "rgb(135, 139, 235)", "rgb(164, 135, 235)"];
+
 function drawPancarte($scope) {
     var startDate = new Date();
     var endDate = new Date();

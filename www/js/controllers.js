@@ -15,7 +15,7 @@ angular.module('starter.controllers', [])
                    var svgContainer = d3.select("#contentSvg").selectAll("#header");
                     var previousValue = parseInt(svgContainer.attr("transform").replace("translate(-","").replace(")"));
                     var newValue =   previousValue * (1 - ratioUp);
-                    translateContentGroupXY(newValue,0);
+                    translateContentGroupXY(newValue,0,false);
         }
         $scope.zoomIn = function zoomIn() {
           //  $scope.hours.forEach(updateXforZoomIn);
@@ -29,14 +29,14 @@ angular.module('starter.controllers', [])
                                 var previousValue = parseInt(svgContainer.attr("transform").replace("translate(-","").replace(")"));
                                 var newValue =  previousValue * (1 - ratioDown);
                                 //svgContainer.attr("transform","translate(-"+newValue+")");
-                                 translateContentGroupXY(newValue,0);
+                                 translateContentGroupXY(newValue,0,false);
         //    var previousViewBox = $('#contentSvg')[0].getAttribute("viewBox").split(" ");
         //    var newX = parseInt(parseInt(previousViewBox[0]) * (1 - ratioDown) + parseInt(previousViewBox[0]));
         //    $('#contentSvg')[0].setAttribute("viewBox", "" + newX + " " + previousViewBox[1] + " " + previousViewBox[2] + " " + previousViewBox[3]);
         };
 
         $scope.scale = function scale(){
-            d3.select("#contentSvg").select("g").attr("transform","translate("+margin+")");
+                setInterval($scope.zoomIn(),500);
         }
     })
 
