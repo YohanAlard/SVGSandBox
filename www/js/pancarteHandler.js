@@ -9,11 +9,14 @@ function scrollH(evt) {
         } else {
             var delta = evt.offsetX - lastX;
         }
-        lastX = evt.offsetX;
-        console.log(delta)
-        var previousViewBox = $('#contentSvg')[0].getAttribute("viewBox").split(" ");
-        var newX = parseInt(previousViewBox[0]) + delta
-        $('#contentSvg')[0].setAttribute("viewBox", "" + newX + " " + previousViewBox[1] + " " + previousViewBox[2] + " " + previousViewBox[3]);
+       // console.log(delta);
+        if (Math.abs(delta) > 10 || lastX ==0) {
+            lastX = evt.offsetX;
+      //      console.log(delta)
+            var previousViewBox = $('#contentSvg')[0].getAttribute("viewBox").split(" ");
+            var newX = parseInt(previousViewBox[0]) + delta
+            $('#contentSvg')[0].setAttribute("viewBox", "" + newX + " " + previousViewBox[1] + " " + previousViewBox[2] + " " + previousViewBox[3]);
+        }
     }
 }
 
@@ -22,16 +25,19 @@ function scrollHEnd(evt) {
 }
 
 function scrollHStart(evt) {
+    console.log("scrollHStart");
     dragging = true;
     lastX = 0;
 }
 
 function attachPancarteHandler() {
+
     dragging = false;
     lastX = 0;
-    $("#rightPanel").on('mousemove', scrollH);
-    $("#rightPanel").on('mousedown', scrollHStart);
-    $("#rightPanel").on('mouseup', scrollHEnd);
+    console.log($("#rightPanel"));
+    $("#contentSvg").on('mousemove', scrollH);
+    $("#contentSvg").on('mousedown', scrollHStart);
+    $("#contentSvg").on('mouseup', scrollHEnd);
 }
 
 
@@ -51,15 +57,28 @@ function updateXforZoomOut(hoursSvg) {
 
 function updateX1X2() {
     var item = d3.select(this);
-    console.log()
     item.attr("x1", "" + (item.attr("x1")) * ratio);
     item.attr("x2", "" + (item.attr("x2")) * ratio);
-   // item.attr("transform", "translate(" +(item.attr("x1")) * 0.1 + ",0)");
+    // item.attr("transform", "translate(" +(item.attr("x1")) * 0.1 + ",0)");
 }
 
 function updateX() {
     var item = d3.select(this);
     item.attr("x", "" + (item.attr("x") * ratio));
+}
+
+function updateD() {
+    console.log("update Path");
+    var item = d3.select(this);
+    var d = item.attr("d").split(",")
+    var buffer = "" + d[0] ;
+    for (var i=1; i < d.length; i++){
+        var pointYX = d[i].split("L");
+        newX = parseInt(pointYX[1]) * ratio;
+        buffer =buffer+  "," + pointYX[0] + "L" + newX;
+    }
+    item.attr("d",buffer);
+    console.log(d);
 }
 
 function log(x1) {

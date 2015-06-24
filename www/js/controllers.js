@@ -7,9 +7,10 @@ angular.module('starter.controllers', [])
            // $scope.hours.forEach(updateXforZoomOut);
             //d3.selectAll("line").selectAll("x1").call(log)
            ratio = ratioDown;
-            d3.selectAll("svg").selectAll("line").each(updateX1X2);
-            d3.selectAll("svg").selectAll("text").each(updateX);
-            d3.selectAll("rect").each(updateX);
+            d3.select("#contentSvg").selectAll("line").each(updateX1X2);
+            d3.select("#contentSvg").selectAll("text").each(updateX);
+            d3.select("#contentSvg").selectAll("path").each(updateD);
+            d3.select("#contentSvg").selectAll("rect").each(updateX);
             //update view box
             var previousViewBox = $('#contentSvg')[0].getAttribute("viewBox").split(" ");
             var newX = parseInt(previousViewBox[0]) * (1 - ratioUp) / 2 + parseInt(previousViewBox[0]);
@@ -19,9 +20,10 @@ angular.module('starter.controllers', [])
         $scope.zoomIn = function zoomIn() {
           //  $scope.hours.forEach(updateXforZoomIn);
             ratio = ratioUp;
-            d3.selectAll("svg").selectAll("line").each(updateX1X2);
-            d3.selectAll("svg").selectAll("text").each(updateX);
-            d3.selectAll("rect").each(updateX);
+            d3.select("#contentSvg").selectAll("line").each(updateX1X2);
+            d3.select("#contentSvg").selectAll("text").each(updateX);
+            d3.select("#contentSvg").selectAll("path").each(updateD);
+            d3.select("#contentSvg").selectAll("rect").each(updateX);
             //for	(index = 0; index < $scope.hours.length; index++) {
             var previousViewBox = $('#contentSvg')[0].getAttribute("viewBox").split(" ");
             var newX = parseInt(previousViewBox[0]) * (1 - ratioDown) / 2 + parseInt(previousViewBox[0]);

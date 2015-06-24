@@ -23,6 +23,7 @@ function drawPancarte($scope) {
     endDate.setDate(endDate.getDate() + nbNextDay);
     identityScale = d3.scale.linear().domain([startDate.getTime(), endDate.getTime()]).range([0, 11520]);
     console.log(startDate.getTime() + " " + endDate.getTime());
+    attachPancarteHandler();
     drawHours($scope, startDate, endDate);
     drawNowBar(startDate);
     var Yindex = 50;
@@ -31,37 +32,18 @@ function drawPancarte($scope) {
         Yindex = Yindex + 110;
     }
 
- /*   drawGraph(startDate, endDate, 160, true, colors[1]);
-    drawGraph(startDate, endDate, 270, false, colors[2]);
-    drawGraph(startDate, endDate, 380, true, colors[3]);
-    drawGraph(startDate, endDate, 380, true, colors[3]);
-    drawGraph(startDate, endDate, 380, true, colors[3]);
-    drawGraph(startDate, endDate, 380, true, colors[3]);*/
-
-
-    attachPancarteHandler();
-
-
 }
 
 function drawNowBar(startDate, endDate) {
     //now RED LINE
     var nowElementObject = new Object();
-    // var now = new Date();
-    //var delta = now.getTime() - startDate.getTime();
-    // console.log(delta * oneMsInPx);
-    //  console.log(identityScale(now.getTime()));
     nowElementObject.redLine = createLineElement(identityScale(new Date().getTime()), 0, identityScale(new Date().getTime()), height, 2, "red");
     $("#contentSvg").append(nowElementObject.redLine);
-    //console.log($("#rightPanel").width);
-    //on going period
     nowLessOneHour = new Date();
     nowLessOneHour.setHours(nowLessOneHour.getHours() - 1);
     nowLessOneHour.clearAfterMinutes();
     nowElementObject.nowPeriod = createRectElement(identityScale(nowLessOneHour), 0, 2 * oneHourInPx, height, 2, "#B4CFEC", "#B4CFEC", 0.2);
     $("#contentSvg").append(nowElementObject.nowPeriod);
-    //   $scope.nowElement = nowElementObject;
-
 }
 
 function drawHours($scope, startDate, endDate) {
@@ -111,8 +93,6 @@ function drawGraph(startDate, endDate, yIndex, odd, color) {
 
     // var xAxis = svgContainer.axis().scale(x).orient("bottom")
 
-
-    //
     var titleLegende = d3.select("#legendeSvg");
     titleLegende.append("rect").attr("x", 0).attr("y", yIndex).attr("height", 100).attr("width", identityScale(endDate.getTime())).attr("fill", "rgb(180,180,180)").attr("opacity", opacity)
     titleLegende.append("text").attr("x", 10).attr("y", yIndex + 50).text("Courbe").attr("class", "zoneTitle").attr("fill", color);
