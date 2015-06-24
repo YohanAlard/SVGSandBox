@@ -2,6 +2,7 @@ var lastX = 0;
 var dragging = false;
 var svgns = "http://www.w3.org/2000/svg";
 var ratio = ratioDown;
+
 function scrollH(evt) {
     if (dragging) {
         if (lastX == 0) {

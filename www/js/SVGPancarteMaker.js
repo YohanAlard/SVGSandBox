@@ -13,6 +13,7 @@ var arrayIndex = 0;
 var ratioDown = 0.9;
 var ratioUp = 1.1;
 var identityScale;
+var margin=1440 *8;
 var colors = ["rgb(250,128,114)", "rgb(250, 173, 114)", "rgb(250, 218, 114)", "rgb(152, 251, 152)", "rgb(135, 206, 235)", "rgb(135, 172, 235)", "rgb(135, 139, 235)", "rgb(164, 135, 235)"];
 function drawPancarte($scope) {
     var startDate = new Date();
@@ -36,21 +37,32 @@ function drawPancarte($scope) {
 
 function drawNowBar(startDate, endDate) {
     //now RED LINE
-    var nowElementObject = new Object();
-    nowElementObject.redLine = createLineElement(identityScale(new Date().getTime()), 0, identityScale(new Date().getTime()), height, 2, "red");
-    $("#contentSvg").append(nowElementObject.redLine);
-    nowLessOneHour = new Date();
-    nowLessOneHour.setHours(nowLessOneHour.getHours() - 1);
-    nowLessOneHour.clearAfterMinutes();
-    nowElementObject.nowPeriod = createRectElement(identityScale(nowLessOneHour), 0, 2 * oneHourInPx, height, 2, "#B4CFEC", "#B4CFEC", 0.2);
-    $("#contentSvg").append(nowElementObject.nowPeriod);
+    var svgContainer = d3.select("#contentSvg").select("g");
+    svgContainer.append("line").attr("x1", identityScale(new Date().getTime()))
+                               .attr("x2",identityScale(new Date().getTime()))
+                               .attr("y1",0)
+                               .attr("y2",height)
+                               .attr("stroke-width",2).attr("stroke","red");
+
+    var runningPeriod = new Date();
+    runningPeriod.setHours(runningPeriod.getHours()-1);
+    svgContainer.append("rect").attr("x",identityScale(runningPeriod))
+                               .attr("y",0)
+                               .attr("width",2 * oneHourInPx)
+                               .attr("height", height)
+                               .attr("fill","#B4CFEC")
+                               .attr("opacity",0.2);
+  //  nowElementObject.redLine = createLineElement(identityScale(new Date().getTime()), 0, identityScale(new Date().getTime()), height, 2, "red");
+///    $("#contentSvg").append(nowElementObject.redLine);
+  //  nowElementObject.nowPeriod = createRectElement(identityScale(nowLessOneHour), 0, 2 * oneHourInPx, height, 2, "#B4CFEC", "#B4CFEC", 0.2);
+  //  $("#contentSvg").append(nowElementObject.nowPeriod);
 }
 
 function drawHours($scope, startDate, endDate) {
     for (var i = startDate.getTime(); i < endDate.getTime(); i = i + oneHourinMs * 2) {
         var currentDate = new Date();
         currentDate.setTime(i);
-        var svgContainer = d3.select("#contentSvg");
+        var svgContainer = d3.select("#contentSvg").select("g");
         svgContainer.append("text").attr("x", identityScale(i)).attr("y", 10).attr("fill", "grey").attr("stroke", "grey").attr("text-anchor", "middle").text(currentDate.toHHMM());
         svgContainer.append("line").attr("x1", identityScale(i)).attr("y1", 20).attr("x2", identityScale(i)).attr("y2", height).attr("fill", "grey").attr("stroke", "grey").attr("text-anchor", "middle").text(currentDate.toHHMM());
         arrayIndex++;
@@ -60,7 +72,7 @@ function drawHours($scope, startDate, endDate) {
 
 function drawGraph($scope,startDate, endDate, yIndex, odd, color) {
     // build service return
-    var svgContainer = d3.select("#contentSvg");
+    var svgContainer = d3.select("#contentSvg").select("g");
     var json = [];
     var index = 0;
     var opacity = 0.1;
@@ -97,5 +109,4 @@ function drawGraph($scope,startDate, endDate, yIndex, odd, color) {
     titleLegende.append("rect").attr("x", 0).attr("y", yIndex).attr("height", 100).attr("width", identityScale(endDate.getTime())).attr("fill", "rgb(180,180,180)").attr("opacity", opacity)
     titleLegende.append("text").attr("x", 10).attr("y", yIndex + 50).text("Courbe").attr("class", "zoneTitle").attr("fill", color);
     titleLegende.append("g").attr("transform", "translate(170," + yIndex + ")").call(xAxis).attr("fill", color);
-    ;
 }

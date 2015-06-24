@@ -31,9 +31,7 @@ angular.module('starter.controllers', [])
         };
 
         $scope.scale = function scale(){
-            var zoom = d3.behavior.zoom().on("zoom", function zomm(){
-                console.log("zoom");
-            });
+            d3.select("#contentSvg").select("g").attr("transform","translate("+margin+")");
         }
     })
 

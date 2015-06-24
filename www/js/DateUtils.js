@@ -21,4 +21,5 @@ Date.prototype.clearAfterMinutes = function () {
          this.setSeconds(0);
          this.setMinutes(0);
          this.setMilliseconds(0);
+
 }
