@@ -10,15 +10,11 @@ angular.module('starter.controllers', [])
             d3.selectAll("svg").selectAll("line").each(updateX1X2);
             d3.selectAll("svg").selectAll("text").each(updateX);
             d3.selectAll("rect").each(updateX);
-        /*    console.log("not this one");
             //update view box
             var previousViewBox = $('#contentSvg')[0].getAttribute("viewBox").split(" ");
             var newX = parseInt(previousViewBox[0]) * (1 - ratioUp) / 2 + parseInt(previousViewBox[0]);
-            $('#contentSvg')[0].setAttribute("viewBox", "" + newX + " " + previousViewBox[1] + " " + previousViewBox[2] + " " + previousViewBox[3]);*/
+            $('#contentSvg')[0].setAttribute("viewBox", "" + newX + " " + previousViewBox[1] + " " + previousViewBox[2] + " " + previousViewBox[3]);
             //update now daa
-
-
-//  /* newXHours =  hoursSvg.hours.getAttribute("x").replace("px","");
         }
         $scope.zoomIn = function zoomIn() {
           //  $scope.hours.forEach(updateXforZoomIn);
@@ -30,6 +26,12 @@ angular.module('starter.controllers', [])
             var previousViewBox = $('#contentSvg')[0].getAttribute("viewBox").split(" ");
             var newX = parseInt(previousViewBox[0]) * (1 - ratioDown) / 2 + parseInt(previousViewBox[0]);
             $('#contentSvg')[0].setAttribute("viewBox", "" + newX + " " + previousViewBox[1] + " " + previousViewBox[2] + " " + previousViewBox[3]);
+        };
+
+        $scope.scale = function scale(){
+            var zoom = d3.behavior.zoom().on("zoom", function zomm(){
+                console.log("zoom");
+            });
         }
     })
 

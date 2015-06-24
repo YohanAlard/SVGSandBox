@@ -12,6 +12,7 @@ function createTextElement( x,  y, fillColor, strokeColor, textContent ){
     svgTextElement.setAttributeNS(null,"y", ""+ y  );
     svgTextElement.setAttributeNS(null,"fill", fillColor);
     svgTextElement.setAttributeNS(null,"stroke",strokeColor);
+    svgTextElement.setAttributeNS(null,"text-anchor","middle");
     var textNode = document.createTextNode(textContent);
     svgTextElement.appendChild(textNode);
     return svgTextElement;

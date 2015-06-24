@@ -8,10 +8,12 @@ var oneHourInPx = 60;
 var oneMsInPx = oneHourInPx / (1000 * 60 * 60);
 var oneDayinPx = 1440;
 var width = oneHourInPx * 24 * 8;
-var height = "2500";
+var height = "1200";
 var arrayIndex = 0;
 var ratioDown = 0.9;
 var ratioUp = 1.1;
+var identityScale;
+var colors = ["rgb(250,128,114)", "rgb(250, 173, 114)", "rgb(250, 218, 114)", "rgb(152, 251, 152)", "rgb(135, 206, 235)", "rgb(135, 172, 235)", "rgb(135, 139, 235)", "rgb(164, 135, 235)"];
 function drawPancarte($scope) {
     var startDate = new Date();
     var endDate = new Date();
@@ -19,47 +21,101 @@ function drawPancarte($scope) {
     endDate.clearAfterMinutes();
     startDate.setDate(startDate.getDate() - nbPreviousDay);
     endDate.setDate(endDate.getDate() + nbNextDay);
+    identityScale = d3.scale.linear().domain([startDate.getTime(), endDate.getTime()]).range([0, 11520]);
+    console.log(startDate.getTime() + " " + endDate.getTime());
     drawHours($scope, startDate, endDate);
     drawNowBar(startDate);
+    var Yindex = 50;
+    for (var i = 0; i < 8; i++) {
+        drawGraph(startDate, endDate, Yindex, false, colors[i]);
+        Yindex = Yindex + 110;
+    }
+
+ /*   drawGraph(startDate, endDate, 160, true, colors[1]);
+    drawGraph(startDate, endDate, 270, false, colors[2]);
+    drawGraph(startDate, endDate, 380, true, colors[3]);
+    drawGraph(startDate, endDate, 380, true, colors[3]);
+    drawGraph(startDate, endDate, 380, true, colors[3]);
+    drawGraph(startDate, endDate, 380, true, colors[3]);*/
+
+
     attachPancarteHandler();
+
+
 }
 
-function drawNowBar(startDate) {
+function drawNowBar(startDate, endDate) {
     //now RED LINE
     var nowElementObject = new Object();
-    var now = new Date();
-    var delta = now.getTime() - startDate.getTime();
-    nowElementObject.redLine = createLineElement(delta * oneMsInPx, 0, delta * oneMsInPx, height, 2, "red");
+    // var now = new Date();
+    //var delta = now.getTime() - startDate.getTime();
+    // console.log(delta * oneMsInPx);
+    //  console.log(identityScale(now.getTime()));
+    nowElementObject.redLine = createLineElement(identityScale(new Date().getTime()), 0, identityScale(new Date().getTime()), height, 2, "red");
     $("#contentSvg").append(nowElementObject.redLine);
-    console.log($("#rightPanel").width);
+    //console.log($("#rightPanel").width);
     //on going period
     nowLessOneHour = new Date();
+    nowLessOneHour.setHours(nowLessOneHour.getHours() - 1);
     nowLessOneHour.clearAfterMinutes();
-    var x = nowLessOneHour.getTime() - startDate.getTime();
-    nowElementObject.nowPeriod = createRectElement(x * oneMsInPx + 15, 0, 2 * oneHourInPx, height, 2, "#B4CFEC", "#B4CFEC", 0.2);
+    nowElementObject.nowPeriod = createRectElement(identityScale(nowLessOneHour), 0, 2 * oneHourInPx, height, 2, "#B4CFEC", "#B4CFEC", 0.2);
     $("#contentSvg").append(nowElementObject.nowPeriod);
- //   $scope.nowElement = nowElementObject;
+    //   $scope.nowElement = nowElementObject;
 
 }
 
 function drawHours($scope, startDate, endDate) {
-    var nbItem = 0;
-    $scope.hours = [];
-
     for (var i = startDate.getTime(); i < endDate.getTime(); i = i + oneHourinMs * 2) {
-        nbItem++;
-        var currentTime = new Date();
-        currentTime.setTime(i);
-        //draw hour text
-        var hoursSvg = new Object();
-        hoursSvg.hours = createTextElement((nbItem * oneHourInPx * 2), 10, "grey", "grey", currentTime.toHHMM());
-        $("#contentSvg").append(hoursSvg.hours);
-        console.log(nbItem);
-        //draw grid
-        hoursSvg.lines = createLineElement(((nbItem * oneHourInPx * 2) + 15), 20, ((nbItem * oneHourInPx * 2) + 15), height, 1, "grey");
-        $("#contentSvg").append(hoursSvg.lines);
-        $scope.hours[arrayIndex] = hoursSvg;
-        console.log("arrayIndex " + arrayIndex + " " + $scope.hours[arrayIndex]);
+        var currentDate = new Date();
+        currentDate.setTime(i);
+        var svgContainer = d3.select("#contentSvg");
+        svgContainer.append("text").attr("x", identityScale(i)).attr("y", 10).attr("fill", "grey").attr("stroke", "grey").attr("text-anchor", "middle").text(currentDate.toHHMM());
+        svgContainer.append("line").attr("x1", identityScale(i)).attr("y1", 20).attr("x2", identityScale(i)).attr("y2", height).attr("fill", "grey").attr("stroke", "grey").attr("text-anchor", "middle").text(currentDate.toHHMM());
         arrayIndex++;
     }
+}
+
+
+function drawGraph(startDate, endDate, yIndex, odd, color) {
+    // build service return
+    var svgContainer = d3.select("#contentSvg");
+    var json = [];
+    var index = 0;
+    var opacity = 0.1;
+    if (odd) {
+        var opacity = 0.2;
+    }
+    for (var i = startDate.getTime(); i < endDate.getTime(); i = i + oneHourinMs * 0.5) {
+        json[index] = [i, Math.floor(Math.random() * 100) + 0]
+        index++;
+    }
+
+    svgContainer.append("rect").attr("x", 0).attr("y", yIndex).attr("height", 100).attr("width", identityScale(endDate.getTime())).attr("fill", "rgb(180,180,180)").attr("opacity", opacity);
+    for (var i = 0; i < json.length; i++) {
+
+    }
+    //This is the accessor function we talked about above
+    var lineFunction = d3.svg.line().x(function (d) {
+        return identityScale(d[0]);
+    }).y(function (d) {
+        return (d[1] + yIndex);
+    }).interpolate("linear");
+    var lineGraph = svgContainer.append("path")
+        .attr("d", lineFunction(json))
+        .attr("stroke", color)
+        .attr("stroke-width", 2)
+        .attr("fill", "none");
+
+    var yScale = d3.scale.linear().domain([0, 100]).range([0, 100]);
+    var xAxis = d3.svg.axis().scale(yScale).orient("left").ticks(3);
+
+    // var xAxis = svgContainer.axis().scale(x).orient("bottom")
+
+
+    //
+    var titleLegende = d3.select("#legendeSvg");
+    titleLegende.append("rect").attr("x", 0).attr("y", yIndex).attr("height", 100).attr("width", identityScale(endDate.getTime())).attr("fill", "rgb(180,180,180)").attr("opacity", opacity)
+    titleLegende.append("text").attr("x", 10).attr("y", yIndex + 50).text("Courbe").attr("class", "zoneTitle").attr("fill", color);
+    titleLegende.append("g").attr("transform", "translate(170," + yIndex + ")").call(xAxis).attr("fill", color);
+    ;
 }

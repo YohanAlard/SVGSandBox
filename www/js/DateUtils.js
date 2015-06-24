@@ -11,7 +11,9 @@ Date.prototype.toHHMMSS = function () {
 
 Date.prototype.toHHMM = function () {
     //    console.log(" toLocaleTimeString " + this.toLocaleTimeString().substring(0,5));
-        return this.toLocaleTimeString().substring(0,5);
+        //return this.toLocaleTimeString().substring(0,5);
+    var format = d3.time.format("%H %M");
+    return format(this);
 }
 
 Date.prototype.clearAfterMinutes = function () {
