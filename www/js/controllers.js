@@ -12,10 +12,10 @@ angular.module('starter.controllers', [])
             d3.select("#contentSvg").selectAll("path").each(updateD);
             d3.select("#contentSvg").selectAll("rect").each(updateRect);
             //update view box
-            var previousViewBox = $('#contentSvg')[0].getAttribute("viewBox").split(" ");
-            var newX =  parseInt(parseInt(previousViewBox[0]) +  parseInt(previousViewBox[0]) * (1 - ratioUp));
-            $('#contentSvg')[0].setAttribute("viewBox", "" + newX + " " + previousViewBox[1] + " " + previousViewBox[2] + " " + previousViewBox[3]);
-            //update now daa
+                   var svgContainer = d3.select("#contentSvg").selectAll("#header");
+                    var previousValue = parseInt(svgContainer.attr("transform").replace("translate(-","").replace(")"));
+                    var newValue =   previousValue * (1 - ratioUp);
+                    translateContentGroupXY(newValue,0);
         }
         $scope.zoomIn = function zoomIn() {
           //  $scope.hours.forEach(updateXforZoomIn);
@@ -25,9 +25,14 @@ angular.module('starter.controllers', [])
             d3.select("#contentSvg").selectAll("path").each(updateD);
             d3.select("#contentSvg").selectAll("rect").each(updateRect);
             //for	(index = 0; index < $scope.hours.length; index++) {
-            var previousViewBox = $('#contentSvg')[0].getAttribute("viewBox").split(" ");
-            var newX = parseInt(parseInt(previousViewBox[0]) * (1 - ratioDown) + parseInt(previousViewBox[0]));
-            $('#contentSvg')[0].setAttribute("viewBox", "" + newX + " " + previousViewBox[1] + " " + previousViewBox[2] + " " + previousViewBox[3]);
+              var svgContainer = d3.select("#contentSvg").select("g");
+                                var previousValue = parseInt(svgContainer.attr("transform").replace("translate(-","").replace(")"));
+                                var newValue =  previousValue * (1 - ratioDown);
+                                //svgContainer.attr("transform","translate(-"+newValue+")");
+                                 translateContentGroupXY(newValue,0);
+        //    var previousViewBox = $('#contentSvg')[0].getAttribute("viewBox").split(" ");
+        //    var newX = parseInt(parseInt(previousViewBox[0]) * (1 - ratioDown) + parseInt(previousViewBox[0]));
+        //    $('#contentSvg')[0].setAttribute("viewBox", "" + newX + " " + previousViewBox[1] + " " + previousViewBox[2] + " " + previousViewBox[3]);
         };
 
         $scope.scale = function scale(){

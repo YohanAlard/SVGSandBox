@@ -37,7 +37,7 @@ function drawPancarte($scope) {
 
 function drawNowBar(startDate, endDate) {
     //now RED LINE
-    var svgContainer = d3.select("#contentSvg").select("g");
+    var svgContainer = d3.select("#contentSvg").selectAll("g");
     svgContainer.append("line").attr("x1", identityScale(new Date().getTime()))
                                .attr("x2",identityScale(new Date().getTime()))
                                .attr("y1",0)
@@ -52,18 +52,16 @@ function drawNowBar(startDate, endDate) {
                                .attr("height", height)
                                .attr("fill","#B4CFEC")
                                .attr("opacity",0.2);
-  //  nowElementObject.redLine = createLineElement(identityScale(new Date().getTime()), 0, identityScale(new Date().getTime()), height, 2, "red");
-///    $("#contentSvg").append(nowElementObject.redLine);
-  //  nowElementObject.nowPeriod = createRectElement(identityScale(nowLessOneHour), 0, 2 * oneHourInPx, height, 2, "#B4CFEC", "#B4CFEC", 0.2);
-  //  $("#contentSvg").append(nowElementObject.nowPeriod);
 }
 
 function drawHours($scope, startDate, endDate) {
     for (var i = startDate.getTime(); i < endDate.getTime(); i = i + oneHourinMs * 2) {
         var currentDate = new Date();
         currentDate.setTime(i);
-        var svgContainer = d3.select("#contentSvg").select("g");
+        var svgContainer = d3.select("#contentSvg").select("#header");
         svgContainer.append("text").attr("x", identityScale(i)).attr("y", 10).attr("fill", "grey").attr("stroke", "grey").attr("text-anchor", "middle").text(currentDate.toHHMM());
+        var svgContainer = d3.select("#contentSvg").select("#graph");
+
         svgContainer.append("line").attr("x1", identityScale(i)).attr("y1", 20).attr("x2", identityScale(i)).attr("y2", height).attr("fill", "grey").attr("stroke", "grey").attr("text-anchor", "middle").text(currentDate.toHHMM());
         arrayIndex++;
     }
@@ -72,7 +70,7 @@ function drawHours($scope, startDate, endDate) {
 
 function drawGraph($scope,startDate, endDate, yIndex, odd, color) {
     // build service return
-    var svgContainer = d3.select("#contentSvg").select("g");
+    var svgContainer = d3.select("#contentSvg").select("#graph");
     var json = [];
     var index = 0;
     var opacity = 0.1;

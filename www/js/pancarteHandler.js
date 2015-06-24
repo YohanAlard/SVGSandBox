@@ -1,4 +1,5 @@
 var lastX = 0;
+var lastY =0;
 var dragging = false;
 var svgns = "http://www.w3.org/2000/svg";
 var ratio = ratioDown;
@@ -6,19 +7,39 @@ var ratio = ratioDown;
 function scrollH(evt) {
     if (dragging) {
         if (lastX == 0) {
-            delta = 0
+            deltaX = 0
         } else {
-            var delta = evt.offsetX - lastX;
+            var deltaX = evt.offsetX - lastX;
+        }
+        if (lastY == 0){
+            deltaY = 0
+        } else {
+            var deltaY = evt.offsetY - lastY;
         }
        // console.log(delta);
-        if (Math.abs(delta) > 10 || lastX ==0) {
+        if (Math.abs(deltaX) > 10 || lastX ==0) {
             lastX = evt.offsetX;
       //      console.log(delta)
-            var previousViewBox = $('#contentSvg')[0].getAttribute("viewBox").split(" ");
-            var newX = parseInt(previousViewBox[0]) + delta
-            $('#contentSvg')[0].setAttribute("viewBox", "" + newX + " " + previousViewBox[1] + " " + previousViewBox[2] + " " + previousViewBox[3]);
-        }
+               translateContentGroupXY(deltaX,0);
+          }
+        if (Math.abs(deltaY)> 10 || lastY ==0) {
+                                         lastY = evt.offsetY;
+                                   //      console.log(delta)
+                                            translateContentGroupXY(0,deltaY);
+                                       }
     }
+}
+
+function translateContentGroupXY(deltaX, deltaY){
+        var svgGraph = d3.select("#contentSvg").selectAll("#graph");
+        var svgHeader = d3.select("#contentSvg").selectAll("#header");
+        var previousValueX = parseInt(svgGraph.attr("transform").replace("translate(-","").replace(")").split(",")[0]);
+        var previousValueY = parseInt(svgGraph.attr("transform").replace("translate(-","").replace(")").split(",")[1]);
+        var newValueX = previousValueX + deltaX;
+        var newValueY = previousValueY + deltaY;
+        svgGraph.attr("transform","translate(-"+newValueX+","+newValueY+")");
+        svgHeader.attr("transform","translate(-"+newValueX+")");
+
 }
 
 function scrollHEnd(evt) {
@@ -101,13 +122,3 @@ function log(x1) {
     console.log(x1);
 }
 
-function updateD3TextforZoomOutLineD3(hoursSvg) {
-    //  console.log("newXHours" + newXHours);
-
-    hoursSvg.attr("x", "" + (parseInt(newXHours) * ratioDown));
-    hoursSvg.attr("x1").replace("px", "");
-    // console.log("newXHours" + newXLines);
-    hoursSvg.attr("x1", "" + (parseInt(newXLines) * ratioDown));
-    hoursSvg.attr("x2", "" + (parseInt(newXLines) * ratioDown));
-    //hoursSvg.attr("transform", "translate(" + margin.left + "," + margin.top + ")"))
-}
