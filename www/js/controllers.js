@@ -10,10 +10,10 @@ angular.module('starter.controllers', [])
             d3.select("#contentSvg").selectAll("line").each(updateX1X2);
             d3.select("#contentSvg").selectAll("text").each(updateX);
             d3.select("#contentSvg").selectAll("path").each(updateD);
-            d3.select("#contentSvg").selectAll("rect").each(updateX);
+            d3.select("#contentSvg").selectAll("rect").each(updateRect);
             //update view box
             var previousViewBox = $('#contentSvg')[0].getAttribute("viewBox").split(" ");
-            var newX = parseInt(previousViewBox[0]) * (1 - ratioUp) / 2 + parseInt(previousViewBox[0]);
+            var newX =  parseInt(parseInt(previousViewBox[0]) +  parseInt(previousViewBox[0]) * (1 - ratioUp));
             $('#contentSvg')[0].setAttribute("viewBox", "" + newX + " " + previousViewBox[1] + " " + previousViewBox[2] + " " + previousViewBox[3]);
             //update now daa
         }
@@ -23,10 +23,10 @@ angular.module('starter.controllers', [])
             d3.select("#contentSvg").selectAll("line").each(updateX1X2);
             d3.select("#contentSvg").selectAll("text").each(updateX);
             d3.select("#contentSvg").selectAll("path").each(updateD);
-            d3.select("#contentSvg").selectAll("rect").each(updateX);
+            d3.select("#contentSvg").selectAll("rect").each(updateRect);
             //for	(index = 0; index < $scope.hours.length; index++) {
             var previousViewBox = $('#contentSvg')[0].getAttribute("viewBox").split(" ");
-            var newX = parseInt(previousViewBox[0]) * (1 - ratioDown) / 2 + parseInt(previousViewBox[0]);
+            var newX = parseInt(parseInt(previousViewBox[0]) * (1 - ratioDown) + parseInt(previousViewBox[0]));
             $('#contentSvg')[0].setAttribute("viewBox", "" + newX + " " + previousViewBox[1] + " " + previousViewBox[2] + " " + previousViewBox[3]);
         };
 

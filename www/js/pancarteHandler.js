@@ -67,15 +67,30 @@ function updateX() {
     item.attr("x", "" + (item.attr("x") * ratio));
 }
 
-function updateD() {
-    console.log("update Path");
+function updateRect() {
     var item = d3.select(this);
+    item.attr("x", "" + (item.attr("x") * ratio));
+    if (item.attr("width") * ratio>  0 && item.attr("width") < oneDayinPx * 8){
+        item.attr("width", "" + (item.attr("width") * ratio));
+    }
+
+}
+
+
+function updateD() {
+
+    var item = d3.select(this);
+    console.log("update Path +" + item.attr("d"));
     var d = item.attr("d").split(",")
     var buffer = "" + d[0] ;
     for (var i=1; i < d.length; i++){
         var pointYX = d[i].split("L");
-        newX = parseInt(pointYX[1]) * ratio;
-        buffer =buffer+  "," + pointYX[0] + "L" + newX;
+        if (pointYX.length == 2){
+            newX = parseInt(parseInt(pointYX[1]) * ratio);
+            buffer =buffer+  "," + pointYX[0] + "L" + newX;
+        } else {
+            buffer =buffer+  "," +  pointYX[0];
+        }
     }
     item.attr("d",buffer);
     console.log(d);

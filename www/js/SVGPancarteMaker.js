@@ -28,7 +28,7 @@ function drawPancarte($scope) {
     drawNowBar(startDate);
     var Yindex = 50;
     for (var i = 0; i < 8; i++) {
-        drawGraph(startDate, endDate, Yindex, false, colors[i]);
+        drawGraph($scope,startDate, endDate, Yindex, false, colors[i]);
         Yindex = Yindex + 110;
     }
 
@@ -58,7 +58,7 @@ function drawHours($scope, startDate, endDate) {
 }
 
 
-function drawGraph(startDate, endDate, yIndex, odd, color) {
+function drawGraph($scope,startDate, endDate, yIndex, odd, color) {
     // build service return
     var svgContainer = d3.select("#contentSvg");
     var json = [];
