@@ -83,9 +83,6 @@ function drawGraph($scope,startDate, endDate, yIndex, odd, color) {
     }
 
     svgContainer.append("rect").attr("x", 0).attr("y", yIndex).attr("height", 100).attr("width", identityScale(endDate.getTime())).attr("fill", "rgb(180,180,180)").attr("opacity", opacity);
-    for (var i = 0; i < json.length; i++) {
-
-    }
     //This is the accessor function we talked about above
     var lineFunction = d3.svg.line().x(function (d) {
         return identityScale(d[0]);
@@ -103,7 +100,7 @@ function drawGraph($scope,startDate, endDate, yIndex, odd, color) {
 
     // var xAxis = svgContainer.axis().scale(x).orient("bottom")
 
-    var titleLegende = d3.select("#legendeSvg");
+    var titleLegende = d3.select("#legendeSvg").select("#legend");
     titleLegende.append("rect").attr("x", 0).attr("y", yIndex).attr("height", 100).attr("width", identityScale(endDate.getTime())).attr("fill", "rgb(180,180,180)").attr("opacity", opacity)
     titleLegende.append("text").attr("x", 10).attr("y", yIndex + 50).text("Courbe").attr("class", "zoneTitle").attr("fill", color);
     titleLegende.append("g").attr("transform", "translate(170," + yIndex + ")").call(xAxis).attr("fill", color);

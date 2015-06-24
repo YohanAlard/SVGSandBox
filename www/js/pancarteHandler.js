@@ -33,12 +33,14 @@ function scrollH(evt) {
 function translateContentGroupXY(deltaX, deltaY){
         var svgGraph = d3.select("#contentSvg").selectAll("#graph");
         var svgHeader = d3.select("#contentSvg").selectAll("#header");
+        var svgLegend = d3.select("#legendeSvg").selectAll("#legend");
         var previousValueX = parseInt(svgGraph.attr("transform").replace("translate(-","").replace(")").split(",")[0]);
         var previousValueY = parseInt(svgGraph.attr("transform").replace("translate(-","").replace(")").split(",")[1]);
         var newValueX = previousValueX + deltaX;
         var newValueY = previousValueY + deltaY;
         svgGraph.attr("transform","translate(-"+newValueX+","+newValueY+")");
         svgHeader.attr("transform","translate(-"+newValueX+")");
+        svgLegend.attr("transform","translate(0,"+newValueY+")");
 
 }
 

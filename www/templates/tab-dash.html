@@ -5,10 +5,11 @@
                 <svg id="legendeSvg" height="500px" style="overflow: visible; font: 10px Arial;" width="100%"
                                    xmlns="http://www.w3.org/2000/svg"
                                   >
+
                     <text x="10" y="15" class="zoneTitle" ng-click="zoomIn()">Zoom In</text>
                     <text x="20" y="30" class="zoneTitle" ng-click="zoomOut()">Zoom out</text>
                     <text x="30" y="45" class="zoneTitle" ng-click="scale()">Scale</text>
-
+                    <g id="legend" transform="translate(0,0)"></g>
                 </svg>
             </div>
             <div  id="rightPanel" class="col-90 content2">
