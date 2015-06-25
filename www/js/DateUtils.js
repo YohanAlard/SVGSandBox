@@ -12,10 +12,16 @@ Date.prototype.toHHMMSS = function () {
 Date.prototype.toHHMM = function () {
     //    console.log(" toLocaleTimeString " + this.toLocaleTimeString().substring(0,5));
         //return this.toLocaleTimeString().substring(0,5);
-    var format = d3.time.format("%H %M");
+    var format = d3.time.format("%H:%M");
     return format(this);
 }
 
+Date.prototype.toDate = function () {
+    //    console.log(" toLocaleTimeString " + this.toLocaleTimeString().substring(0,5));
+    //return this.toLocaleTimeString().substring(0,5);
+    var format = d3.time.format("%d-%m-%Y %H:%M");
+    return format(this);
+}
 Date.prototype.clearAfterMinutes = function () {
     //    console.log(" toLocaleTimeString " + this.toLocaleTimeString().substring(0,5));
          this.setSeconds(0);

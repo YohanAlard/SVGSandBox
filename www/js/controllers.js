@@ -1,16 +1,18 @@
 angular.module('starter.controllers', [])
 
     .controller('DashCtrl', function ($scope) {
-        drawPancarte($scope);
+
 
         $scope.zoomOut = function zoomOut() {
            // $scope.hours.forEach(updateXforZoomOut);
             //d3.selectAll("line").selectAll("x1").call(log)
            ratio = ratioDown;
+            alert("zoomOut");
             d3.select("#contentSvg").selectAll("line").each(updateX1X2);
             d3.select("#contentSvg").selectAll("text").each(updateX);
             d3.select("#contentSvg").selectAll("path").each(updateD);
             d3.select("#contentSvg").selectAll("rect").each(updateRect);
+            d3.select("#contentSvg").selectAll("circle").each(updateCircle);
             //update view box
                    var svgContainer = d3.select("#contentSvg").selectAll("#header");
                     var previousValue = parseInt(svgContainer.attr("transform").replace("translate(-","").replace(")"));
@@ -20,10 +22,12 @@ angular.module('starter.controllers', [])
         $scope.zoomIn = function zoomIn() {
           //  $scope.hours.forEach(updateXforZoomIn);
             ratio = ratioUp;
+            alert("zomm in");
             d3.select("#contentSvg").selectAll("line").each(updateX1X2);
             d3.select("#contentSvg").selectAll("text").each(updateX);
             d3.select("#contentSvg").selectAll("path").each(updateD);
             d3.select("#contentSvg").selectAll("rect").each(updateRect);
+            d3.select("#contentSvg").selectAll("circle").each(updateCircle);
             //for	(index = 0; index < $scope.hours.length; index++) {
               var svgContainer = d3.select("#contentSvg").select("g");
                                 var previousValue = parseInt(svgContainer.attr("transform").replace("translate(-","").replace(")"));
@@ -36,8 +40,11 @@ angular.module('starter.controllers', [])
         };
 
         $scope.scale = function scale(){
-                setInterval($scope.zoomIn(),500);
+              //  setInterval($scope.zoomIn(),500);
+            extController.notify("test");
         }
+
+        drawPancarte($scope);
     })
 
     .controller('ChatsCtrl', function ($scope, Chats) {
