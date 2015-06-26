@@ -62,10 +62,20 @@ function translateContentGroupXY(deltaX, deltaY, boolean) {
     var svgLegend = d3.select("#legendeSvg").selectAll("#legend");
     var previousValueX = parseInt(svgGraph.attr("transform").replace("translate(-", "").replace(")").split(",")[0]);
     var previousValueY = parseInt(svgGraph.attr("transform").replace("translate(-", "").replace(")").split(",")[1]);
-    var newValueX = previousValueX + deltaX;
-    var newValueY = previousValueY + deltaY;
+    var newValueX = previousValueX - deltaX;
+    var newValueY = previousValueY - deltaY;
     console.log("newValueX  = "+newValueX );
     console.log("newValueY  = "+newValueY );
+    if (newValueY > 0){
+        newValueY = 0;
+    }
+    if (newValueX > 9000){
+        newValueX = 9000;
+    }
+    if (newValueX < 0){
+        newValueX = 0;
+    }
+
 
     svgGraph.attr("transform", "translate(-" + newValueX + "," + newValueY + ")");
     svgHeader.attr("transform", "translate(-" + newValueX + ")");
@@ -83,7 +93,7 @@ function scrollHStart(evt) {
     dragging = true;
     lastX = 0;
 }
-
+var previousScale = -1;
 function attachPancarteHandler($scope) {
 
     dragging = false;
@@ -95,8 +105,16 @@ function attachPancarteHandler($scope) {
     $("#contentSvg").on('touchstart', scrollHStart);
     $("#contentSvg").on('touchmove', scrollH2);
     $("#contentSvg").on('touchend', scrollHEnd);
-    var zoomListener = d3.behavior.zoom().on("zoom",$scope.zoomOut());
-    zoomListener(d3.select("#contentSvg"));
+ /*   var zoomListener = d3.behavior.zoom().scaleExtent([1, 10]).on("zoom",function zoomIn(data){
+        console.log("scale" + d3.event.scale);
+        if (previousScale >d3.event.scale){
+            $scope.zoomOut();
+        }  else{
+            $scope.zoomIn();
+        }
+        previousScale = d3.event.scale;
+    });
+    zoomListener(d3.select("#contentSvg"));*/
 
 }
 
@@ -145,7 +163,7 @@ function updateRect() {
 function updateD() {
 
     var item = d3.select(this);
-    console.log("update Path +" + item.attr("d"));
+  //  console.log("update Path +" + item.attr("d"));
     var d = item.attr("d").split(",")
     var buffer = "" + d[0];
     for (var i = 1; i < d.length; i++) {
@@ -158,7 +176,7 @@ function updateD() {
         }
     }
     item.attr("d", buffer);
-    console.log(d);
+  //  console.log(d);
 }
 
 function log(x1) {

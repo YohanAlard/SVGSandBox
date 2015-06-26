@@ -1,16 +1,12 @@
 <ion-view view-title="Chats">
-  <ion-content>
-    <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="chat in chats" type="item-text-wrap" href="#/tab/chats/{{chat.id}}">
-        <img ng-src="{{chat.face}}">
-        <h2>{{chat.name}}</h2>
-        <p>{{chat.lastText}}</p>
-        <i class="icon ion-chevron-right icon-accessory"></i>
+  <ion-content  scroll="false">
+      <div id="mainPanel"class=" legende">
+        <button ng-click="update()"> * 2 </button>
+        <svg id="svg" height="1200px" style="overflow: hidden; font: 10px Arial;" width="100%"
+             xmlns="http://www.w3.org/2000/svg">
+          <g id="graph" transform=""></g>
+        </svg>
 
-        <ion-option-button class="button-assertive" ng-click="remove(chat)">
-          Delete
-        </ion-option-button>
-      </ion-item>
-    </ion-list>
+      </div>
   </ion-content>
 </ion-view>

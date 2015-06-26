@@ -30,7 +30,7 @@ function drawPancarte($scope) {
     drawNowBar(startDate);
     var Yindex = 50;
     for (var i = 0; i < 8; i++) {
-        drawGraph($scope, startDate, endDate, Yindex, false, colors[i]);
+        drawGraph("#contentSvg", $scope, startDate, endDate, Yindex, false, colors[i]);
         Yindex = Yindex + 110;
     }
     popup = d3.select("body").append("div")
@@ -72,16 +72,16 @@ function drawHours($scope, startDate, endDate) {
 }
 
 
-function drawGraph($scope, startDate, endDate, yIndex, odd, color) {
+function drawGraph(svpParent, $scope, startDate, endDate, yIndex, odd, color) {
     // build service return
-    var svgContainer = d3.select("#contentSvg").select("#graph");
+    var svgContainer = d3.select(svpParent).select("#graph");
     var json = [];
     var index = 0;
     var opacity = 0.1;
     if (odd) {
         var opacity = 0.2;
     }
-    for (var i = startDate.getTime(); i < endDate.getTime(); i = i + oneHourinMs * 0.5) {
+    for (var i = startDate.getTime(); i < endDate.getTime(); i = i + oneHourinMs * (Math.random() * 5)) {
         json[index] = [i, Math.floor(Math.random() * 100) + 0]
         index++;
     }
@@ -103,7 +103,7 @@ function drawGraph($scope, startDate, endDate, yIndex, odd, color) {
     var xAxis = d3.svg.axis().scale(yScale).orient("left").ticks(3);
 
     for (var i = 0; i < json.length; i++) {
-        svgContainer.append("circle").attr("cx", identityScale(json[i][0]) )
+        svgContainer.append("circle").attr("cx", identityScale(json[i][0]))
             .data(json)
             .attr("cy", json[i][1] + yIndex)
             .attr("r", 5).attr("fill", color)
@@ -114,11 +114,11 @@ function drawGraph($scope, startDate, endDate, yIndex, odd, color) {
                 popup.transition()
                     .duration(200)
                     .style("opacity", .9);
-                popup.html(date.toDate() + "<br/>"  + d[1])
+                popup.html(date.toDate() + "<br/>" + d[1])
                     .style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY - 28) + "px");
 
-               // alert("valeur " +date.toDate()   + " : " + d[1]);
+                // alert("valeur " +date.toDate()   + " : " + d[1]);
             });
     }
     // var xAxis = svgContainer.axis().scale(x).orient("bottom")
@@ -126,4 +126,86 @@ function drawGraph($scope, startDate, endDate, yIndex, odd, color) {
     titleLegende.append("rect").attr("x", 0).attr("y", yIndex).attr("height", 100).attr("width", identityScale(endDate.getTime())).attr("fill", "rgb(180,180,180)").attr("opacity", opacity)
     titleLegende.append("text").attr("x", 10).attr("y", yIndex + 50).text("Courbe").attr("class", "zoneTitle").attr("fill", color);
     titleLegende.append("g").attr("transform", "translate(150," + yIndex + ")").call(xAxis).attr("fill", color);
+}
+
+function redraw(startDate,endDate) {
+    var data =[];
+    var index = 0;
+    for (var i = startDate.getTime(); i < endDate.getTime(); i = i + oneHourinMs * (Math.random() * 5)) {
+        data[index] = [i, Math.floor(Math.random() * 100) + 0]
+        index++;
+    }
+    // Créé la sélection initiale, et bind les données
+    var circles = d3.select("svg")
+        .data(data);
+
+    // Lorsque l'on créé les nœuds, on les place directement au coordonnées
+    // correctes, mais avec un rayon de 0, ce qui permettra une
+    // animation des plus primesautières.
+    circles.enter().append('circle')
+        .attr("cx", function(d) { return identityScale(d[0]); })
+        .attr("cy", function(d) { return d[1]; })
+        .attr("r", 0);
+
+    // Idem, lorsqu'une donnée n'existe plus, on fait disparaître le
+    // cercle correspondant en réduisant élégamment son rayon à 0
+  /*  circles.exit()
+        .transition()
+        .duration(750)
+        .attr("r", 0)
+        .remove();*/
+
+    // Voici maintenant le traitement effectués sur les nœuds liés à
+    // des données existantes. Notez que les nœuds de la sélection `enter`
+    // seront également concernés ici.
+/*    circles
+        .attr("fill", function(d, i) {return "blue" })
+        .transition()
+        .duration(750)
+        .attr("cx", function(d) { return identityScale(d[0]); })
+        .attr("cy", function(d) { return d[1]; })
+        .attr("r", "5");*/
+};
+
+function drawGraph2(svpParent, $scope, startDate, endDate, yIndex, odd, color) {
+    // build service return
+    var svgContainer = d3.select(svpParent).select("#graph");
+    var json = [];
+    var index = 0;
+    var opacity = 0.1;
+    if (odd) {
+        var opacity = 0.2;
+    }
+    svgContainer.append("rect").attr("x", 0).attr("y", yIndex).attr("height", 100).attr("width", identityScale(endDate.getTime())).attr("fill", "rgb(180,180,180)").attr("opacity", opacity);
+    for (var i = startDate.getTime(); i < endDate.getTime(); i = i + oneHourinMs * (Math.random() * 5)) {
+        json[index] = [i, Math.floor(Math.random() * 100) + 0]
+        index++;
+    }
+
+
+
+    var circles =  svgContainer.selectAll('circle').data(json);
+    circles.enter()
+        .append("circle")
+        .attr("cx", function (d) {
+            return identityScale(d[0]);
+        })
+        .attr("cy", function (d) {
+            return (d[1] + yIndex);
+        })
+        .attr("r", function (d) {
+            return 5;
+        })
+        .attr("fill", function (d) {
+            return "red";
+        })
+        .on("mouseover", function (d) {
+          console.log(d);
+        });
+    circles.exit()
+    $scope.circles = circles;
+}
+
+function redrawCircle(){
+
 }
